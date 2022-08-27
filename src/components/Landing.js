@@ -3,6 +3,9 @@ import styles from "./landing.module.css"
 import { Link , useParams , useNavigate} from "react-router-dom"
 import axios from 'axios';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Landing = () => {
     const navigate = useNavigate()
     const params = useParams()
@@ -36,7 +39,7 @@ const Landing = () => {
 
             setLoading(false)
         }catch(err){
-            alert("Sth went wrong :(")
+            toast.error("Sth went wrong :(")
             setLoading(false)
         }
     }
@@ -46,7 +49,7 @@ const Landing = () => {
 
         now.setTime(now.getTime() - 3 * 24 * 60 * 60 * 1000);
 
-        document.cookie =  `name=${mainUser.name};path=/;expires=${now}`
+        document.cookie = `name=${mainUser.name};path=/;expires=${now}`
                 
         navigate("/")
 
@@ -55,11 +58,14 @@ const Landing = () => {
 
     if(mainUser.name){
         return (
-            <div className={styles.container}>
-              {loading && <div className={styles.loader}></div>}
-              <h3>Welcome {mainUser.name}</h3>
-              <button onClick={logOut} className='mt-4'>logout</button>
-            </div>
+            <>
+                <ToastContainer />
+                <div className={styles.container}>
+                {loading && <div className={styles.loader}></div>}
+                <h3>Welcome {mainUser.name}</h3>
+                <button onClick={logOut} className='mt-4'>logout</button>
+                </div>
+            </>
         )
     }else{
         return (        

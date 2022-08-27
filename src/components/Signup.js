@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import validate from "./validate";
 import styles from "./Form.module.css";
 
@@ -46,6 +49,8 @@ const Signup = () => {
         confirmPassword: true,
         isAccepted: true,
       });
+
+      toast.warn("Invalid data :(")
     } else {
       setLoading(true);
 
@@ -53,11 +58,13 @@ const Signup = () => {
 
       try{
         await axios.post("https://login-form-3-1b33b-default-rtdb.firebaseio.com/users.json", newUser)
-        alert("Signed up successfully :)");
-        setLoading(false);
-        navigate("/login");
+        toast.success("Signed up successfully :)")
+        setTimeout(() => {
+          setLoading(false);
+          navigate("/login" , {replace : true});
+        }, 4000)
       }catch (err){
-        alert("Sth went wrong :(");
+        toast.error("Sth went wrong :(")
         setLoading(false);
       }
     }
@@ -65,6 +72,7 @@ const Signup = () => {
 
   return (
     <div className={styles.mainContainer}>
+      <ToastContainer />
       <form className={styles.formContainer} onSubmit={submithandler}>
         <h3>Sign up</h3>
         

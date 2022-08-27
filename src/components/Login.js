@@ -1,6 +1,9 @@
 import React , { useState , useEffect} from 'react';
 import { Link , useNavigate} from 'react-router-dom'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import validate  from './validate'
 import styles from "./Form.module.css"
 import axios from 'axios';
@@ -41,6 +44,8 @@ const Signup = () => {
                 name: true,
                 password: true,
             }) 
+
+            toast.warn("Invalid data")
         }else{
             setLoading(true)
 
@@ -57,12 +62,12 @@ const Signup = () => {
                 }else if(mainUser){
                     navigate(`/${mainUser[1].name}/${mainUser[1].password}/` , {replace : true})
                 }else{
-                    alert("Wrong Username or Password")
+                    toast.error("User not found :(")
                 }
 
                 setLoading(false)
             }catch(err){
-                alert("Sth went wrong :)")
+                toast.error("Sth went wrong :(")
                 setLoading(false)
             }
         }
@@ -79,6 +84,8 @@ const Signup = () => {
 
     return (
         <div className={styles.mainContainer}>
+            <ToastContainer />
+
             <form className={styles.formContainer} onSubmit={submithandler}>
                 <h3>Login</h3>
 
